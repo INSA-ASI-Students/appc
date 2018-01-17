@@ -1,5 +1,3 @@
-function clean_env()
-  clear;
-  clc;
-  close all;
-end
+clear;
+clc;
+close all;
