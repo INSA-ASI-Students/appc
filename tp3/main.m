@@ -12,22 +12,11 @@ clean_env();
 % 2n, randomly distributed on a Gaussian hypersphere
 n = 200;
 p = 2 * n;
-X = randn(n, p);
-X = X ./ (ones(n, 1) * sqrt(sum(X.^2)));
-epsi = 1e-6;
-
-% b) Création d'un signal
 T = 5;
 rsnr = 30;
-ind = randperm(size(X, 2));
-indice = ind(1:T);
-weights = randn(T, 1);
-weights = weights + .1 * sign(weights);
-y = X(:, indice) * weights;
-std_noise = std(y) / rsnr;
-y = y + randn(size(y)) .* (ones(n, 1) * std_noise);
-w_opt = zeros(p, 1);
-w_opt(indice) = weights;
+epsi = 1e-6;
+
+[X, y, w_opt, indice] = dataset_generator(n, p, T, rsnr);
 
 %% 2. Solving the optimization problem
 % a) Implement in CVX the optimization problem above
@@ -44,16 +33,16 @@ fprintf('Time: %.2f \n', toc);
 
 % b) Check if the problem has been properly solved by verifying the optimality conditions)
 [exact_on_zeros, exact_on_non_zeros, ind_non_zero] = optimality_conditions(X, y, w_cvx, lambda, epsi);
-fprintf('Exact on zeros : %.2f \n', exact_on_zeros);
-fprintf('Exact on non zeros : %.2f \n', exact_on_non_zeros);
+fprintf('Exact on zeros : %.4f \n', exact_on_zeros);
+fprintf('Exact on non zeros : %.4f \n', exact_on_non_zeros);
 
 % exact_on_zeros < 0
 % exact_on_non_zeros < epsi
 % Les résultats sont donc cohérent par rapport à ce qui est attendu
 
 % c) compare the amplitudes of retrieved weights for the true non-zeros elements
-% figure();
-% plot(w_cvx - w_opt);
+figure();
+plot(w_cvx - w_opt);
 
 % Nous pouvons voir que le lasso n'est pas adapté dans ce cas du fait qu'il ne
 % prédit pas correctement les variables attendue. (Forte erreur en des points précis)
@@ -92,8 +81,8 @@ fprintf('Time: %.2f \n', toc);
 
 % b) Check if the solution is correct through the optimality conditions
 [exact_on_zeros, exact_on_non_zeros, ind_non_zero] = optimality_conditions(X, y, w, lambda, epsi);
-fprintf('Exact on zeros : %.2f \n', exact_on_zeros);
-fprintf('Exact on non zeros : %.2f \n', exact_on_non_zeros);
+fprintf('Exact on zeros : %.4f \n', exact_on_zeros);
+fprintf('Exact on non zeros : %.4f \n', exact_on_non_zeros);
 
 % c)
 tic
