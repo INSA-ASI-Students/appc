@@ -3,9 +3,8 @@
 % Thibault Théologien
 % ASI 5
 
-clear;
-clc;
-close all;
+addpath('../utils');
+clean_env();
 
 randn('seed', 10);
 
