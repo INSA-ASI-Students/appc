@@ -1,8 +1,8 @@
 function X = myspectrogram(x,nfft,fs,window,noverlap,doplot,dbdown)
 
 %MYSPECTROGRAM Calculate spectrogram from signal.
-% B = MYSPECTROGRAM(A,NFFT,Fs,WINDOW,NOVERLAP) calculates the 
-%     spectrogram for the signal in vector A.  
+% B = MYSPECTROGRAM(A,NFFT,Fs,WINDOW,NOVERLAP) calculates the
+%     spectrogram for the signal in vector A.
 %
 % NFFT is the FFT size used for each frame of A.  It should be a
 % power of 2 for fastest computation of the spectrogram.
@@ -24,11 +24,11 @@ function X = myspectrogram(x,nfft,fs,window,noverlap,doplot,dbdown)
 % the window length minus the hop size.)  The hop size is called
 % NHOP below.  NOVERLAP must be less than M.
 %
-% If doplot is nonzero, or if there is no output argument, the 
+% If doplot is nonzero, or if there is no output argument, the
 % spectrogram is displayed.
 %
 % When the spectrogram is displayed, it is ``clipped'' dbdown dB
-% below its maximum magnitude.  The default clipping level is 100 
+% below its maximum magnitude.  The default clipping level is 100
 % dB down.
 %
 % Thus, MYSPECTROGRAM splits the signal into overlapping segments of
@@ -49,7 +49,7 @@ function X = myspectrogram(x,nfft,fs,window,noverlap,doplot,dbdown)
 %
 % If A is a length NX complex signal, B is returned as a complex
 % matrix with NFFT rows and
-%      k = floor((NX-NOVERLAP)/(length(WINDOW)-NOVERLAP)) 
+%      k = floor((NX-NOVERLAP)/(length(WINDOW)-NOVERLAP))
 %        = floor((NX-NOVERLAP)/NHOP)
 % columns.  When A is real, only the NFFT/2+1 rows are needed when
 % NFFT even, and the first (NFFT+1)/2 rows are sufficient for
@@ -71,13 +71,13 @@ x = x(:); % make sure it's a column
 
 M = length(window);
 if (M<2) error(...
-  'myspectrogram: Expect complete window, not just its length'); 
+  'myspectrogram: Expect complete window, not just its length');
 end;
 if (M<2) error(...
-  'myspectrogram: Expect complete window, not just its length'); 
+  'myspectrogram: Expect complete window, not just its length');
 end;
 if length(x)<M % zero-pad to fill a window:
-  x = [x;zeros(M-length(x),1)]; 
+  x = [x;zeros(M-length(x),1)];
 end;
 Modd = mod(M,2); % 0 if M even, 1 if odd
 Mo2 = (M-Modd)/2;
